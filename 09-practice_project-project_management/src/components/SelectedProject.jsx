@@ -1,46 +1,39 @@
-export default function SelectedProject({ project, handleDeleteProject }) {
+import Task from "./Task";
 
-    const handleDeleteProjectClicked = (event) => {
-        
-    }
+export default function SelectedProject({
+    project, 
+    onDeleteProject, 
+    onAddTaks, 
+    onDeleteTask,
+    tasks
+    }) {
 
-    const clearTasks = (event) => {
-        const task = event.value;
-    }
-
-    return <>
-        <h1>{project.title}</h1>
-
-        <button onClick={handleDeleteProjectClicked}>Delete</button>
-
-        <h4>{project.dueDate}</h4>
-
-        <p>
-            {project.description}
-        </p>
-
-        <div className="divide-x divide-solid"></div>
-        
-        <h2>Tasks</h2>
-
-        <div>
-            <input 
-                type="text" 
-                placeholder="Todo" 
-                className="m-2 p-1 focus:border-blue-500"/>
-            <button>Add Task</button>
+    const formattedDate = new Date(project.dueDate).toLocaleDateString('da-DK', {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric'
+    });
+    return (
+        <div className="w-[35rem] mt-16">
+            <header className="pb-4 mb-4 border-b-2 border-stone-300">
+                <div className="flex items-center justify-between">
+                <h1 className="text-3xl font-bold text-stone-600 mb-2">{project.title}</h1>
+                <button 
+                    onClick={onDeleteProject}
+                    className="text-stone-600 hover:text-stone-950"
+                >
+                    Delete
+                </button>
+                </div>
+                <p className="mb-4 text-stone-400">{formattedDate}</p>
+                <p className="text-stone-600 whitespace-pre-wrap">{project.description}</p>
+            </header>
+            <Task 
+                onAddTaks={onAddTaks}
+                onDeleteTask={onDeleteTask}
+                tasks={tasks}
+            />
+            
         </div>
-
-        <ul>
-           {project.tasks.forEach(tasks => {
-                <li className="bg-neutral-400 rounded-lg">
-                    <p>{tasks.title}</p>
-                    <button>Clear</button>
-                </li>
-            })
-           }
-        </ul>
-        
-    </>
-
+    );
 }
